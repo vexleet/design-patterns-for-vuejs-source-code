@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
-import App from './examples/form-validation/form-validation.vue'
+import App from './examples/renderless-password-mine/App.vue'
+import AppWithCustomValidator from "./examples/renderless-password-mine/AppWithCustomValidator.vue";
 
-createApp(App).mount('#app')
+createApp(AppWithCustomValidator).mount('#app')
