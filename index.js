@@ -1,5 +1,4 @@
 import { createApp } from 'vue'
-import App from './examples/renderless-password-mine/App.vue'
-import AppWithCustomValidator from "./examples/renderless-password-mine/AppWithCustomValidator.vue";
+import TicTacToeApp from "./examples/composition-mine/tic-tac-toe-app.vue";
 
-createApp(AppWithCustomValidator).mount('#app')
+createApp(TicTacToeApp).mount('#app')
