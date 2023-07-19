@@ -5,17 +5,17 @@ import {useTicTacToe} from "./tic-tac-toe";
 export default defineComponent({
   name: "tic-tac-toe-app-functional",
   setup() {
-    const { currentBoard, makeMove, undo, redo } = useTicTacToe()
+    const { currentBoard, makeMove, undo, redo, winner, resetBoard } = useTicTacToe()
 
-    // watch(winner, (newVal) => {
-    //   if(newVal === 'tie') {
-    //     alert('Tie!')
-    //     resetBoard()
-    //   } else if (newVal) {
-    //     alert(`${newVal} won!`)
-    //     resetBoard()
-    //   }
-    // })
+    watch(winner, (newVal) => {
+      if(newVal === 'tie') {
+        alert('Tie!')
+        resetBoard()
+      } else if (newVal) {
+        alert(`${newVal} won!`)
+        resetBoard()
+      }
+    })
 
     return {
       currentBoard,

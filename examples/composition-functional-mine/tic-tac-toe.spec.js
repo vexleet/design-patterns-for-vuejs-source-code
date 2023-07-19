@@ -1,4 +1,4 @@
-import {createGame, initialBoard, makeMove, redoMove, undoMove} from "./tic-tac-toe.js";
+import {createGame, initialBoard, isDraw, isWinningMove, makeMove, redoMove, undoMove} from "./tic-tac-toe.js";
 
 describe('useTicTacToeFunctional', function () {
   it('initializes an empty board', () => {
@@ -163,5 +163,138 @@ describe('useTicTacToeFunctional', function () {
           ]
       ])
     })
+
+    it('should do nothing if board history is empty', () => {
+      const boardHistory = []
+      const boards = createGame([
+        [
+          ['-', '-', '-'],
+          ['-', '-', '-'],
+          ['-', '-', '-']
+        ]
+      ])
+
+      const {newBoards, newCounter, newBoardHistory} = redoMove({boards, boardHistory, counter: 'o'})
+
+      expect(newCounter).toEqual('o')
+      expect(newBoards).toEqual([
+        [
+          ['-', '-', '-'],
+          ['-', '-', '-'],
+          ['-', '-', '-']
+        ]
+      ])
+      expect(newBoardHistory).toEqual([])
+    })
   });
+
+  describe('isWinningMove', () =>  {
+    describe('winning moves', function () {
+      it('should return true if there is a winning move on a row', () => {
+        const board = createGame([
+          ['x', 'x', '-'],
+          ['-', '-', '-'],
+          ['-', '-', '-']
+        ])
+
+        const {newBoard} = makeMove(board, {
+          row: 0,
+          col: 2,
+          counter: 'x',
+          boardHistory: []
+        })
+
+        expect(isWinningMove(newBoard, {
+          row: 0,
+          col: 2,
+          counter: 'x',
+        })).toBe(true)
+      })
+
+      it('should return true if there is a winning move on a column', () => {
+        const board = createGame([
+          ['x', '-', '-'],
+          ['x', '-', '-'],
+          ['-', '-', '-']
+        ])
+
+        const {newBoard} = makeMove(board, {
+          row: 2,
+          col: 0,
+          counter: 'x',
+          boardHistory: []
+        })
+
+        expect(isWinningMove(newBoard, {
+          row: 2,
+          col: 0,
+          counter: 'x',
+        })).toBe(true)
+      })
+
+      it('should return true if there is a winning move on a diagonal', () => {
+        const board = createGame([
+          ['x', '-', '-'],
+          ['-', 'x', '-'],
+          ['-', '-', '-']
+        ])
+
+        const {newBoard} = makeMove(board, {
+          row: 2,
+          col: 2,
+          counter: 'x',
+          boardHistory: []
+        })
+
+        expect(isWinningMove(newBoard, {
+          row: 2,
+          col: 2,
+          counter: 'x',
+        })).toBe(true)
+      })
+    });
+
+    it('should return false if there is no winning move', () => {
+      const board = createGame([
+        ['x', '-', '-'],
+        ['-', '-', '-'],
+        ['-', '-', '-']
+      ])
+
+      const {newBoard} = makeMove(board, {
+        row: 2,
+        col: 2,
+        counter: 'x',
+        boardHistory: []
+      })
+
+      expect(isWinningMove(newBoard, {
+        row: 2,
+        col: 2,
+        counter: 'x',
+      })).toBe(false)
+    })
+  })
+
+  describe('isDraw', () => {
+    it('should return true if there is a draw', () => {
+      const board = createGame([
+        ['x', 'x', 'o'],
+        ['o', 'o', 'x'],
+        ['x', 'o', 'x']
+      ])
+
+      expect(isDraw(board)).toBe(true)
+    })
+
+    it('should return false if there is no draw', () => {
+      const board = createGame([
+        ['x', '-', 'o'],
+        ['o', 'o', 'x'],
+        ['x', 'o', 'x']
+      ])
+
+      expect(isDraw(board)).toBe(false)
+    })
+  })
 });
